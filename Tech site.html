@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultant's Ledger & Productivity Suite</title>
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+        
+        /* Navigation */
+        nav {
+            background-color: #2c3e50;
+            color: white;
+            padding: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 1.5rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            background-color: #3498db;
+        }
+        
+        /* Main Content */
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .section {
+            display: none;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        h1, h2, h3 {
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+        
+        /* Section A: Consultant's Ledger Styles */
+        .ledger-nav {
+            display: flex;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .ledger-nav button {
+            background: none;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            font-size: 1rem;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .ledger-nav button.active {
+            border-bottom: 3px solid #3498db;
+            color: #3498db;
+            font-weight: bold;
+        }
+        
+        .ledger-content {
+            display: none;
+        }
+        
+        .ledger-content.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        .btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-secondary {
+            background-color: #95a5a6;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #7f8c8d;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            margin-top: 1.5rem;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+        
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .kpi-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .kpi-card {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .kpi-card h3 {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            margin-bottom: 0.5rem;
+        }
+        
+        .kpi-card .value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .chart-container {
+            height: 300px;
+            margin: 2rem 0;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #7f8c8d;
+        }
+        
+        /* Section B: Calendar Styles */
+        .calendar-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .calendar-nav {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+            background-color: #ddd;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .weekday-header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 0.75rem 0;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .day {
+            background-color: white;
+            min-height: 120px;
+            padding: 0.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .day.other-month {
+            background-color: #f8f9fa;
+            color: #aaa;
+        }
+        
+        .date {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .comments {
+            flex-grow: 1;
+            font-size: 0.85rem;
+            color: #555;
+            overflow-y: auto;
+        }
+        
+        /* Section C: Task List Calendar Styles */
+        .task-calendar-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .task-calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+            background-color: #ddd;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .task-day {
+            background-color: white;
+            min-height: 150px;
+            padding: 0.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .task-day.other-month {
+            background-color: #f8f9fa;
+            color: #aaa;
+        }
+        
+        .tasks {
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+        
+        .tasks ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tasks li {
+            padding: 0.25rem 0;
+            font-size: 0.85rem;
+            border-bottom: 1px dotted #eee;
+        }
+        
+        .add-task {
+            font-size: 0.85rem;
+            color: #3498db;
+            cursor: pointer;
+            margin-top: auto;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .nav-links li {
+                margin: 0.25rem 0;
+            }
+            
+            .form-row {
+                flex-direction: column;
+            }
+            
+            .kpi-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">Consultant's Ledger & Productivity Suite</div>
+            <ul class="nav-links">
+                <li><a href="#" class="nav-link active" data-section="projects">Projects</a></li>
+                <li><a href="#" class="nav-link" data-section="calendar">Calendar</a></li>
+                <li><a href="#" class="nav-link" data-section="tasks">Task List</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Section A: Consultant's Ledger -->
+        <section id="projects" class="section active">
+            <h1>Consultant's Ledger</h1>
+            
+            <!-- Ledger Navigation -->
+            <div class="ledger-nav">
+                <button class="ledger-nav-btn active" data-ledger="dashboard">Dashboard</button>
+                <button class="ledger-nav-btn" data-ledger="projects">Projects</button>
+                <button class="ledger-nav-btn" data-ledger="provisional">Provisional Income</button>
+                <button class="ledger-nav-btn" data-ledger="timesheet">Timesheet</button>
+                <button class="ledger-nav-btn" data-ledger="settings">Settings</button>
+            </div>
+            
+            <!-- Dashboard Content -->
+            <div id="dashboard" class="ledger-content active">
+                <h2>Dashboard</h2>
+                
+                <!-- Period Selector -->
+                <div class="form-group">
+                    <label for="period-selector">Select Period:</label>
+                    <select id="period-selector">
+                        <option>This Month</option>
+                        <option>This Quarter</option>
+                        <option>Year-to-Date</option>
+                        <option>Custom Range</option>
+                    </select>
+                </div>
+                
+                <!-- KPI Cards -->
+                <div class="kpi-cards">
+                    <div class="kpi-card">
+                        <h3>Total Provisional Income</h3>
+                        <div class="value">₹2,40,000</div>
+                    </div>
+                    <div class="kpi-card">
+                        <h3>Total Actual Revenue</h3>
+                        <div class="value">₹2,15,000</div>
+                    </div>
+                    <div class="kpi-card">
+                        <h3>Total Variance</h3>
+                        <div class="value">-₹25,000</div>
+                    </div>
+                    <div class="kpi-card">
+                        <h3>Overall Billable Hours</h3>
+                        <div class="value">215</div>
+                    </div>
+                </div>
+                
+                <!-- Chart Placeholder -->
+                <div class="chart-container">
+                    Provisional vs. Actual Revenue Chart
+                </div>
+                
+                <!-- Project Summary Table -->
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Project Name</th>
+                                <th>Provisional Income</th>
+                                <th>Actual Revenue</th>
+                                <th>Variance (₹)</th>
+                                <th>Variance (%)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Fusion Financials Rollout</td>
+                                <td>₹1,20,000</td>
+                                <td>₹1,05,000</td>
+                                <td>-₹15,000</td>
+                                <td>-12.5%</td>
+                            </tr>
+                            <tr>
+                                <td>Global Tech CRM Implementation</td>
+                                <td>₹80,000</td>
+                                <td>₹75,000</td>
+                                <td>-₹5,000</td>
+                                <td>-6.25%</td>
+                            </tr>
+                            <tr>
+                                <td>APAC Data Migration</td>
+                                <td>₹40,000</td>
+                                <td>₹35,000</td>
+                                <td>-₹5,000</td>
+                                <td>-12.5%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Projects Content -->
+            <div id="projects-management" class="ledger-content">
+                <h2>Project Management</h2>
+                
+                <button class="btn">Add New Project</button>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Project Name</th>
+                                <th>Client Name</th>
+                                <th>Region</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Hourly Rate (₹)</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Fusion Financials Rollout</td>
+                                <td>Global Tech Inc.</td>
+                                <td>APAC</td>
+                                <td>01-01-2023</td>
+                                <td>30-06-2023</td>
+                                <td>₹1,500</td>
+                                <td>
+                                    <button class="btn btn-secondary">Edit</button>
+                                    <button class="btn btn-secondary">Archive</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Global Tech CRM Implementation</td>
+                                <td>Global Tech Inc.</td>
+                                <td>North America</td>
+                                <td>15-02-2023</td>
+                                <td>15-08-2023</td>
+                                <td>₹2,000</td>
+                                <td>
+                                    <button class="btn btn-secondary">Edit</button>
+                                    <button class="btn btn-secondary">Archive</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>APAC Data Migration</td>
+                                <td>Innovate Solutions</td>
+                                <td>APAC</td>
+                                <td>01-03-2023</td>
+                                <td>30-09-2023</td>
+                                <td>₹1,200</td>
+                                <td>
+                                    <button class="btn btn-secondary">Edit</button>
+                                    <button class="btn btn-secondary">Archive</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Provisional Income Content -->
+            <div id="provisional-income" class="ledger-content">
+                <h2>Provisional Income Calculation</h2>
+                
+                <div class="form-group">
+                    <label for="date-range">Date Range:</label>
+                    <select id="date-range">
+                        <option>This Month</option>
+                        <option>Last Month</option>
+                        <option>This Quarter</option>
+                        <option>Last Quarter</option>
+                        <option>This Year</option>
+                        <option>Custom Range</option>
+                    </select>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="client-filter">Filter by Client:</label>
+                        <select id="client-filter">
+                            <option>All Clients</option>
+                            <option>Global Tech Inc.</option>
+                            <option>Innovate Solutions</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="region-filter">Filter by Region:</label>
+                        <select id="region-filter">
+                            <option>All Regions</option>
+                            <option>APAC</option>
+                            <option>EMEA</option>
+                            <option>North America</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Project Name</th>
+                                <th>Jan 2023</th>
+                                <th>Feb 2023</th>
+                                <th>Mar 2023</th>
+                                <th>Apr 2023</th>
+                                <th>May 2023</th>
+                                <th>Jun 2023</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Fusion Financials Rollout</td>
+                                <td>₹20,000</td>
+                                <td>₹20,000</td>
+                                <td>₹20,000</td>
+                                <td>₹20,000</td>
+                                <td>₹20,000</td>
+                                <td>₹20,000</td>
+                                <td>₹1,20,000</td>
+                            </tr>
+                            <tr>
+                                <td>Global Tech CRM Implementation</td>
+                                <td>₹0</td>
+                                <td>₹13,333</td>
+                                <td>₹13,333</td>
+                                <td>₹13,333</td>
+                                <td>₹13,333</td>
+                                <td>₹13,333</td>
+                                <td>₹66,665</td>
+                            </tr>
+                            <tr>
+                                <td>APAC Data Migration</td>
+                                <td>₹0</td>
+                                <td>₹0</td>
+                                <td>₹6,667</td>
+                                <td>₹6,667</td>
+                                <td>₹6,667</td>
+                                <td>₹6,667</td>
+                                <td>₹26,668</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Total</strong></td>
+                                <td><strong>₹20,000</strong></td>
+                                <td><strong>₹33,333</strong></td>
+                                <td><strong>₹40,000</strong></td>
+                                <td><strong>₹40,000</strong></td>
+                                <td><strong>₹40,000</strong></td>
+                                <td><strong>₹40,000</strong></td>
+                                <td><strong>₹2,13,333</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <button class="btn">Export Report</button>
+            </div>
+            
+            <!-- Timesheet Content -->
+            <div id="timesheet" class="ledger-content">
+                <h2>Timesheet Management</h2>
+                
+                <button class="btn">Add New Timesheet Entry</button>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Project</th>
+                                <th>Hours Worked</th>
+                                <th>Billable</th>
+                                <th>Revenue (₹)</th>
+                                <th>Notes</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>15-05-2023</td>
+                                <td>Fusion Financials Rollout</td>
+                                <td>8</td>
+                                <td>Yes</td>
+                                <td>₹12,000</td>
+                                <td>Client meeting and requirements gathering</td>
+                                <td>
+                                    <button class="btn btn-secondary">Edit</button>
+                                    <button class="btn btn-secondary">Delete</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>16-05-2023</td>
+                                <td>Fusion Financials Rollout</td>
+                                <td>7.5</td>
+                                <td>Yes</td>
+                                <td>₹11,250</td>
+                                <td>System architecture design</td>
+                                <td>
+                                    <button class="btn btn-secondary">Edit</button>
+                                    <button class="btn btn-secondary">Delete</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>17-05-2023</td>
+                                <td>Global Tech CRM Implementation</td>
+                                <td>6</td>
+                                <td>Yes</td>
+                                <td>₹12,000</td>
+                                <td>Database configuration</td>
+                                <td>
+                                    <button class="btn btn-secondary">Edit</button>
+                                    <button class="btn btn-secondary">Delete</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <button class="btn">Export Timesheet</button>
+            </div>
+            
+            <!-- Settings Content -->
+            <div id="settings" class="ledger-content">
+                <h2>Settings</h2>
+                
+                <div class="form-group">
+                    <h3>Security</h3>
+                    <label>
+                        <input type="checkbox"> Enable PIN Lock
+                    </label>
+                    <label>
+                        <input type="checkbox"> Enable Biometric Lock
+                    </label>
+                </div>
+                
+                <div class="form-group">
+                    <h3>Data Sync</h3>
+                    <label>
+                        <input type="checkbox"> Enable Cloud Backup
+                    </label>
+                    <div class="form-group">
+                        <label for="cloud-provider">Cloud Provider:</label>
+                        <select id="cloud-provider">
+                            <option>Google Drive</option>
+                            <option>Microsoft OneDrive</option>
+                            <option>Dropbox</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <h3>Export Settings</h3>
+                    <label>
+                        <input type="checkbox"> Include Project Details in Exports
+                    </label>
+                    <label>
+                        <input type="checkbox"> Include Hourly Breakdown in Exports
+                    </label>
+                </div>
+                
+                <button class="btn">Save Settings</button>
+            </div>
+        </section>
+        
+        <!-- Section B: Calendar -->
+        <section id="calendar" class="section">
+            <div class="calendar-container">
+                <header class="calendar-header">
+                    <h2>Calendar</h2>
+                    <div class="calendar-nav">
+                        <button class="btn btn-secondary">Previous Month</button>
+                        <h2>May 2023</h2>
+                        <button class="btn btn-secondary">Next Month</button>
+                    </div>
+                </header>
+                
+                <div class="calendar-grid">
+                    <!-- Weekday Headers -->
+                    <div class="weekday-header">Sun</div>
+                    <div class="weekday-header">Mon</div>
+                    <div class="weekday-header">Tue</div>
+                    <div class="weekday-header">Wed</div>
+                    <div class="weekday-header">Thu</div>
+                    <div class="weekday-header">Fri</div>
+                    <div class="weekday-header">Sat</div>
+                    
+                    <!-- Calendar Days -->
+                    <div class="day other-month">
+                        <div class="date">30</div>
+                        <div class="comments">Add comment here...</div>
+                    </div>
+                    <div class="day other-month">
+                        <div class="date">1</div>
+                        <div class="comments">Add comment here...</div>
+                    </div>
+                    <div class="day">
+                        <div class="date">2</div>
+                        <div class="comments">Team meeting at 10 AM</div>
+                    </div>
+                    <div class="day">
+                        <div class="date">3</div>
+                        <div class="comments">Client presentation</div>
+                    </div>
+                    <div class="day">
+                        <div class="date">4</div>
+                        <div class="comments">Add comment here...</div>
+                    </div>
+                    <div class="day">
+                        <div class="date">5</div>
+                        <div class="comments">Project deadline</div>
+                    </div>
+                    <div class="day">
+                        <div class="date">6</div>
+                        <div class="comments">Add comment here...</div>
+                    </div>
+                    <div class="day">
+                        <div class="date">7</div>
+                        <div class="comments">Add comment here...</div>
+                    </div>
+                    <div class="day">
+                        <div class="date">8</div>
+                        <div class="comments">Add comment here...</div>
+                    </div>
+                    <div class="day">
+                        <div class="date">9</div>
+                        <div class="comments">Add comment here...</div>
+                    </div>
+                    <div class="day">
+                        <div class="date">10</div>
+                        <div class="comments">Add comment here...</div>
+                    </div>
+                    <div class="day">
+                        <div class="date">11</div>
+                        <div class="comments">Add comment here...</div>
+                    </div>
+                    <div class="day">
+                        <div class="date">12</div>
+                        <div class="comments">Add comment here...</div>
+                    </div>
+                    <div class="day">
+                        <div class="date">13</div>
+                        <div class="comments">Add comment here...</div>
+                    </div>
+                    <div class="day">
+                        <div class="date">14</div>
+                        <div class="comments">Add comment here...</div>
+                    </div>
+                    <div class="day">
+                        <div class="date">15</div>
+                        <div class="comments">Client meeting and requirements gathering</div>
+                    </div>
+                    <div class="day">
+                        <div class="date">16</div>
+                        <div class="comments">System architecture design</div>
+                    </div>
+                    <div class="day">
+                        <div class="date">17</div>
+                        <div class="comments">Database configuration</div>
+                    </div>
+                    <div class="day">
+                        <div class="date">18</div>
+                        <div class="comments">Add comment here...</div>
+                    </div>
+                    <div class="day">
+                        <div class="date">19</div>
+                        <div class="comments">Add comment here...</div>
+                    </div>
+                    <div class="day">
+                        <div class="date">20</div>
+                        <div class="comments">Add comment here...</div>
+                    </div>
+                    <div class="day">
+                        <div class="date">21</div>
+                        <div class="comments">Add comment here...</div>
+                    </div>
+                    <div class="day">
+                        <div class="date">22</div>
+                        <div class="comments">Add comment here...</div>
+                    </div>
+                    <div class="day">
+                        <div class="date">23</div>
+                        <div class="comments">Add comment here...</div>
+                    </div>
+                    <div class="day">
+                        <div class="date">24</div>
+                        <div class="comments">Add comment here...</div>
+                    </div>
+                    <div class="day">
+                        <div class="date">25</div>
+                        <div class="comments">Add comment here...</div>
+                    </div>
+                    <div class="day">
+                        <div class="date">26</div>
+                        <div class="comments">Add comment here...</div>
+                    </div>
+                    <div class="day">
+                        <div class="date">27</div>
+                        <div class="comments">Add comment here...</div>
+                    </div>
+                    <div class="day">
+                        <div class="date">28</div>
+                        <div class="comments">Add comment here...</div>
+                    </div>
+                    <div class="day">
+                        <div class="date">29</div>
+                        <div class="comments">Add comment here...</div>
+                    </div>
+                    <div class="day">
+                        <div class="date">30</div>
+                        <div class="comments">Add comment here...</div>
+                    </div>
+                    <div class="day">
+                        <div class="date">31</div>
+                        <div class="comments">Add comment here...</div>
+                    </div>
+                    <div class="day other-month">
+                        <div class="date">1</div>
+                        <div class="comments">Add comment here...</div>
+                    </div>
+                    <div class="day other-month">
+                        <div class="date">2</div>
+                        <div class="comments">Add comment here...</div>
+                    </div>
+                    <div class="day other-month">
+                        <div class="date">3</div>
+                        <div class="comments">Add comment here...</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Section C: Task List Calendar -->
+        <section id="tasks" class="section">
+            <div class="task-calendar-container">
+                <header class="calendar-header">
+                    <h2>Task List Calendar</h2>
+                    <div class="calendar-nav">
+                        <button class="btn btn-secondary">Previous Month</button>
+                        <h2>May 2023</h2>
+                        <button class="btn btn-secondary">Next Month</button>
+                    </div>
+                </header>
+                
+                <div class="task-calendar-grid">
+                    <!-- Weekday Headers -->
+                    <div class="weekday-header">Sun</div>
+                    <div class="weekday-header">Mon</div>
+                    <div class="weekday-header">Tue</div>
+                    <div class="weekday-header">Wed</div>
+                    <div class="weekday-header">Thu</div>
+                    <div class="weekday-header">Fri</div>
+                    <div class="weekday-header">Sat</div>
+                    
+                    <!-- Calendar Days with Tasks -->
+                    <div class="task-day other-month">
+                        <div class="date">30</div>
+                        <div class="tasks">
+                            <ul>
+                                <li>No tasks yet</li>
+                            </ul>
+                            <div class="add-task">+ Add task</div>
+                        </div>
+                    </div>
+                    <div class="task-day other-month">
+                        <div class="date">1</div>
+                        <div class="tasks">
+                            <ul>
+                                <li>No tasks yet</li>
+                            </ul>
+                            <div class="add-task">+ Add task</div>
+                        </div>
+                    </div>
+                    <div class="task-day">
+                        <div class="date">2</div>
+                        <div class="tasks">
+                            <ul>
+                                <li>Prepare project documentation</li>
+                                <li>Team meeting at 10 AM</li>
+                            </ul>
+                            <div class="add-task">+ Add task</div>
+                        </div>
+                    </div>
+                    <div class="task-day">
+                        <div class="date">3</div>
+                        <div class="tasks">
+                            <ul>
+                                <li>Client presentation</li>
+                                <li>Review project timeline</li>
+                            </ul>
+                            <div class="add-task">+ Add task</div>
+                        </div>
+                    </div>
+                    <div class="task-day">
+                        <div class="date">4</div>
+                        <div class="tasks">
+                            <ul>
+                                <li>No tasks yet</li>
+                            </ul>
+                            <div class="add-task">+ Add task</div>
+                        </div>
+                    </div>
+                    <div class="task-day">
+                        <div class="date">5</div>
+                        <div class="tasks">
+                            <ul>
+                                <li>Project deadline</li>
+                                <li>Submit deliverables</li>
+                            </ul>
+                            <div class="add-task">+ Add task</div>
+                        </div>
+                    </div>
+                    <div class="task-day">
+                        <div class="date">6</div>
+                        <div class="tasks">
+                            <ul>
+                                <li>No tasks yet</li>
+                            </ul>
+                            <div class="add-task">+ Add task</div>
+                        </div>
+                    </div>
+                    <div class="task-day">
+                        <div class="date">7</div>
+                        <div class="tasks">
+                            <ul>
+                                <li>No tasks yet</li>
+                            </ul>
+                            <div class="add-task">+ Add task</div>
+                        </div>
+                    </div>
+                    <div class="task-day">
+                        <div class="date">8</div>
+                        <div class="tasks">
+                            <ul>
+                                <li>No tasks yet</li>
+                            </ul>
+                            <div class="add-task">+ Add task</div>
+                        </div>
+                    </div>
+                    <div class="task-day">
+                        <div class="date">9</div>
+                        <div class="tasks">
+                            <ul>
+                                <li>No tasks yet</li>
+                            </ul>
+                            <div class="add-task">+ Add task</div>
+                        </div>
+                    </div>
+                    <div class="task-day">
+                        <div class="date">10</div>
+                        <div class="tasks">
+                            <ul>
+                                <li>No tasks yet</li>
+                            </ul>
+                            <div class="add-task">+ Add task</div>
+                        </div>
+                    </div>
+                    <div class="task-day">
+                        <div class="date">11</div>
+                        <div class="tasks">
+                            <ul>
+                                <li>No tasks yet</li>
+                            </ul>
+                            <div class="add-task">+ Add task</div>
+                        </div>
+                    </div>
+                    <div class="task-day">
+                        <div class="date">12</div>
+                        <div class="tasks">
+                            <ul>
+                                <li>No tasks yet</li>
+                            </ul>
+                            <div class="add-task">+ Add task</div>
+                        </div>
+                    </div>
+                    <div class="task-day">
+                        <div class="date">13</div>
+                        <div class="tasks">
+                            <ul>
+                                <li>No tasks yet</li>
+                            </ul>
+                            <div class="add-task">+ Add task</div>
+                        </div>
+                    </div>
+                    <div class="task-day">
+                        <div class="date">14</div>
+                        <div class="tasks">
+                            <ul>
+                                <li>No tasks yet</li>
+                            </ul>
+                            <div class="add-task">+ Add task</div>
+                        </div>
+                    </div>
+                    <div class="task-day">
+                        <div class="date">15</div>
+                        <div class="tasks">
+                            <ul>
+                                <li>Client meeting and requirements gathering</li>
+                                <li>Prepare meeting agenda</li>
+                            </ul>
+                            <div class="add-task">+ Add task</div>
+                        </div>
+                    </div>
+                    <div class="task-day">
+                        <div class="date">16</div>
+                        <div class="tasks">
+                            <ul>
+                                <li>System architecture design</li>
+                                <li>Review technical specifications</li>
+                            </ul>
+                            <div class="add-task">+ Add task</div>
+                        </div>
+                    </div>
+                    <div class="task-day">
+                        <div class="date">17</div>
+                        <div class="tasks">
+                            <ul>
+                                <li>Database configuration</li>
+                                <li>Test database connectivity</li>
+                            </ul>
+                            <div class="add-task">+ Add task</div>
+                        </div>
+                    </div>
+                    <div class="task-day">
+                        <div class="date">18</div>
+                        <div class="tasks">
+                            <ul>
+                                <li>No tasks yet</li>
+                            </ul>
+                            <div class="add-task">+ Add task</div>
+                        </div>
+                    </div>
+                    <div class="task-day">
+                        <div class="date">19</div>
+                        <div class="tasks">
+                            <ul>
+                                <li>No tasks yet</li>
+                            </ul>
+                            <div class="add-task">+ Add task</div>
+                        </div>
+                    </div>
+                    <div class="task-day">
+                        <div class="date">20</div>
+                        <div class="tasks">
+                            <ul>
+                                <li>No tasks yet</li>
+                            </ul>
+                            <div class="add-task">+ Add task</div>
+                        </div>
+                    </div>
+                    <div class="task-day">
+                        <div class="date">21</div>
+                        <div class="tasks">
+                            <ul>
+                                <li>No tasks yet</li>
+                            </ul>
+                            <div class="add-task">+ Add task</div>
+                        </div>
+                    </div>
+                    <div class="task-day">
+                        <div class="date">22</div>
+                        <div class="tasks">
+                            <ul>
+                                <li>No tasks yet</li>
+                            </ul>
+                            <div class="add-task">+ Add task</div>
+                        </div>
+                    </div>
+                    <div class="task-day">
+                        <div class="date">23</div>
+                        <div class="tasks">
+                            <ul>
+                                <li>No tasks yet</li>
+                            </ul>
+                            <div class="add-task">+ Add task</div>
+                        </div>
+                    </div>
+                    <div class="task-day">
+                        <div class="date">24</div>
+                        <div class="tasks">
+                            <ul>
+                                <li>No tasks yet</li>
+                            </ul>
+                            <div class="add-task">+ Add task</div>
+                        </div>
+                    </div>
+                    <div class="task-day">
+                        <div class="date">25</div>
+                        <div class="tasks">
+                            <ul>
+                                <li>No tasks yet</li>
+                            </ul>
+                            <div class="add-task">+ Add task</div>
+                        </div>
+                    </div>
+                    <div class="task-day">
+                        <div class="date">26</div>
+                        <div class="tasks">
+                            <ul>
+                                <li>No tasks yet</li>
+                            </ul>
+                            <div class="add-task">+ Add task</div>
+                        </div>
+                    </div>
+                    <div class="task-day">
+                        <div class="date">27</div>
+                        <div class="tasks">
+                            <ul>
+                                <li>No tasks yet</li>
+                            </ul>
+                            <div class="add-task">+ Add task</div>
+                        </div>
+                    </div>
+                    <div class="task-day">
+                        <div class="date">28</div>
+                        <div class="tasks">
+                            <ul>
+                                <li>No tasks yet</li>
+                            </ul>
+                            <div class="add-task">+ Add task</div>
+                        </div>
+                    </div>
+                    <div class="task-day">
+                        <div class="date">29</div>
+                        <div class="tasks">
+                            <ul>
+                                <li>No tasks yet</li>
+                            </ul>
+                            <div class="add-task">+ Add task</div>
+                        </div>
+                    </div>
+                    <div class="task-day">
+                        <div class="date">30</div>
+                        <div class="tasks">
+                            <ul>
+                                <li>No tasks yet</li>
+                            </ul>
+                            <div class="add-task">+ Add task</div>
+                        </div>
+                    </div>
+                    <div class="task-day">
+                        <div class="date">31</div>
+                        <div class="tasks">
+                            <ul>
+                                <li>No tasks yet</li>
+                            </ul>
+                            <div class="add-task">+ Add task</div>
+                        </div>
+                    </div>
+                    <div class="task-day other-month">
+                        <div class="date">1</div>
+                        <div class="tasks">
+                            <ul>
+                                <li>No tasks yet</li>
+                            </ul>
+                            <div class="add-task">+ Add task</div>
+                        </div>
+                    </div>
+                    <div class="task-day other-month">
+                        <div class="date">2</div>
+                        <div class="tasks">
+                            <ul>
+                                <li>No tasks yet</li>
+                            </ul>
+                            <div class="add-task">+ Add task</div>
+                        </div>
+                    </div>
+                    <div class="task-day other-month">
+                        <div class="date">3</div>
+                        <div class="tasks">
+                            <ul>
+                                <li>No tasks yet</li>
+                            </ul>
+                            <div class="add-task">+ Add task</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Navigation between sections
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('.section');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove active class from all links and sections
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    sections.forEach(s => s.classList.remove('active'));
+                    
+                    // Add active class to clicked link
+                    this.classList.add('active');
+                    
+                    // Show corresponding section
+                    const sectionId = this.getAttribute('data-section');
+                    document.getElementById(sectionId).classList.add('active');
+                });
+            });
+            
+            // Navigation within Consultant's Ledger
+            const ledgerNavBtns = document.querySelectorAll('.ledger-nav-btn');
+            const ledgerContents = document.querySelectorAll('.ledger-content');
+            
+            ledgerNavBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Remove active class from all buttons and contents
+                    ledgerNavBtns.forEach(b => b.classList.remove('active'));
+                    ledgerContents.forEach(c => c.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    // Show corresponding content
+                    const ledgerId = this.getAttribute('data-ledger');
+                    document.getElementById(ledgerId).classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
